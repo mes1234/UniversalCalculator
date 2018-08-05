@@ -11,51 +11,50 @@ export const store = new Vuex.Store({
         toolsList : [
             {
                 id:1,
-                groupa:'arytmetyka',
-                nazwa:'dodaj'
+                group:'arytmetyka',
+                name:'dodaj'
             },
             {
                 id:2,
-                groupa:'arytmetyka',
-                nazwa:'odejmij'
+                group:'arytmetyka',
+                name:'odejmij'
             },
             {
                 id:3,
-                groupa:'arytmetyka',
-                nazwa:'pomnoz'
+                group:'arytmetyka',
+                name:'pomnoz'
             },
             {
                 id:4,
-                gropa:'arytmetyka',
-                nazwa:'podziel'
+                group:'arytmetyka',
+                name:'podziel'
             },
             {
                 id:5,
-                groupa:'arytmetyka',
-                nazwa:'modulo'
+                group:'arytmetyka',
+                name:'modulo'
             },
             {
                 id:6,
-                groupa:'przeplyw',
-                nazwa:'kryza'
+                group:'przeplyw',
+                name:'kryza'
             },
             {
                 id:7,
-                groupa:'przeplyw',
-                nazwa:'darcy'
+                group:'przeplyw',
+                name:'darcy'
             },
             {
                 id:8,
-                groupa:'geometria',
-                nazwa:'pitagoras'
+                group:'geometria',
+                name:'pitagoras'
             },
             {
                 id:9,
-                groupa:'geometria',
-                nazwa:'tales'
-            },
-
-        }, 
+                group:'geometria',
+                name:'tales'
+            }
+        ],
         // current tool to be used
         tool : {id:9},
         // Tool setup parameters for use 

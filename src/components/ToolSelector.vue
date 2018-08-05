@@ -1,24 +1,25 @@
 <template>
     <div id="ToolSelector">
         <h2>Wybierz narzędzie</h2>
-        <ul>
-            <li v-for="product in saleProducts">
-                <span class="name">{{ product.name }}</span>
-                <span class="price">£{{ product.price }}</span>
-            </li>
-        </ul>
+  <!-- <select v-model="selected_game"> -->
+        <select v-model="selectedGroup">
+            <option v-for="group in toolsListGroups" :key="group" :value="group">{{group}}</option>
+        </select>
     </div>
 </template>
 
 <script>
 export default {
     computed: {
-        products(){
-            return this.$store.state.toolsList
+        toolsListGroups(){
+            return [...new Set(this.$store.state.toolsList.map(tool => tool.group))];
         },
-        saleProducts(){
-            return this.$store.getters.saleProducts
-        }
+        // :FIXME not working sending select to store!!!
+    selectedGroup:{
+
+        set:function(selectedGroup){
+            this.$store.state.selectedGroup=selectedGroup;
+    }}
     }
 }
 </script>
