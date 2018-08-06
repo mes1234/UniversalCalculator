@@ -16,3 +16,14 @@ npm run build
 ```
 
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+## TODO ##
+
+ToolSelector:
+* render tools as buttons
+
+ToolForm:
+* add feedback to update values of toolParams
+
+API:
+

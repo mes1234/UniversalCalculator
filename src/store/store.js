@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { isContext } from 'vm';
+// import { isContext } from 'vm';
+// import { stat } from 'fs';
 
 Vue.use(Vuex);
 
@@ -57,7 +58,7 @@ export const store = new Vuex.Store({
             }
         ],
         // current tool to be used
-        tool : {id:9},
+        toolSelected : {id:8},
         // active selected group
         activeGroup : 'geometria',
         // Tool setup parameters for use 
@@ -66,20 +67,19 @@ export const store = new Vuex.Store({
             values:{
                 'pierwsza': {
                     valueUnit: '%',
-                    valueDefault: 1.,
-                    valueType: 'float'
+                    value: 1.,
+                    valueType: 'number'
                 },
                 'druga': {
-                    valueUnit: '%',
-                    valueDefault: 2.,
-                    valueType: 'int'
+                    valueUnit: 'lbm',
+                    value: 'Artur',
+                    valueType: 'text'
                 },
                 'trzecia': {
                     valueUnit: '%',
-                    valueDefault: 3.,
-                    valueType: 'int'
+                    value: 3.,
+                    valueType: 'number'
                 },
-
             }, // values to be passed to server every item has key is name, valueUnit, valueDefault, valueType
             description: 'dodawanie trzech liczn', //string to describe tool
         },
@@ -95,9 +95,17 @@ export const store = new Vuex.Store({
             // return all tools which are in activeGroup
             return state.toolsList.filter(tool =>tool.group === state.activeGroup).map(tool => tool.name);
         },
-        toolsGetInputs: (state)=>{
+        toolsGetInputs: (state)=> {
             //return all parameters required by ToolForm.vue
             return state.toolParams
+        },
+        toolName: (state)=> {
+            //returns currently used tool
+            return state.toolsList.filter(tool =>tool.id ===state.toolSelected.id).map(tool=> tool.name)[0];
+        },
+        toolParameters: (state)=> {
+            //return object to render form
+            return state.toolParams.values
         }
     },
     mutations: {

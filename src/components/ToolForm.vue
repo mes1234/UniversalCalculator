@@ -1,14 +1,13 @@
 <template>
     <div id="ToolSelector">
-        <h2>Wybierz grupę narzędzie</h2>
-  <!-- <select v-model="selected_game"> -->
-        <select v-model="groupSelection" @change="updateGroupSelection(groupSelection)">
-            <option v-for="group in toolsListGroups" :key="group" :value="group">{{group}}</option>
-        </select>
-        <h2>Wybierz narzędzie</h2>
-            <ul>
-                <li v-for="tool in toolsList" :key="tool">{{tool}}</li>
-            </ul>
+        <h2>{{toolName}}</h2>
+        <form>
+            <p v-for="(value, key) in toolParameters" :key="key">
+                {{key}}
+                <input :type=value.valueType :name=key :value=value.value>
+                {{value.valueUnit}}
+            </p>
+        </form>         
     </div>
 </template>
 
@@ -23,8 +22,8 @@ export default {
     },
     computed: {
             ...mapGetters([
-                '', //return all possible groups
-                '' //return all tools in activeGroup
+                'toolName', //return currently used tool
+                'toolParameters' //return current tools required inputs
             ])
 
     },
