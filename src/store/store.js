@@ -63,8 +63,25 @@ export const store = new Vuex.Store({
         // Tool setup parameters for use 
         // in form and description part
         toolParams :{
-            values:{}, // values to be passed to server every item has valueName, valueUnit, valueDefault, valueType
-            description: '', //string to describe tool
+            values:{
+                'pierwsza': {
+                    valueUnit: '%',
+                    valueDefault: 1.,
+                    valueType: 'float'
+                },
+                'druga': {
+                    valueUnit: '%',
+                    valueDefault: 2.,
+                    valueType: 'int'
+                },
+                'trzecia': {
+                    valueUnit: '%',
+                    valueDefault: 3.,
+                    valueType: 'int'
+                },
+
+            }, // values to be passed to server every item has key is name, valueUnit, valueDefault, valueType
+            description: 'dodawanie trzech liczn', //string to describe tool
         },
         // response of server
         result : {}     
@@ -77,6 +94,10 @@ export const store = new Vuex.Store({
         toolsList: (state)=> {
             // return all tools which are in activeGroup
             return state.toolsList.filter(tool =>tool.group === state.activeGroup).map(tool => tool.name);
+        },
+        toolsGetInputs: (state)=>{
+            //return all parameters required by ToolForm.vue
+            return state.toolParams
         }
     },
     mutations: {
