@@ -6,9 +6,7 @@
             <option v-for="group in toolsListGroups" :key="group" :value="group">{{group}}</option>
         </select>
         <h2>Wybierz narzędzie</h2>
-            <ul>
-                <li v-for="tool in toolsList" :key="tool">{{tool}}</li>
-            </ul>
+            <button v-for="tool in toolsList" :key="tool.id" v-on:click="setCurrentTool(tool)"  type="button">{{tool.name}}</button>
             
     </div>
 </template>
@@ -31,7 +29,8 @@ export default {
     },
     methods: {
         ...mapActions([
-            'updateGroupSelection'
+            'updateGroupSelection', //rerender all tools in group
+            'setCurrentTool' //assing current tool to clicked one
         ])
     }
 
