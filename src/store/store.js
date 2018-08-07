@@ -165,6 +165,12 @@ export const store = new Vuex.Store({
                 default:
                     console.log('brak takiej opcji')
             }
+        },
+        updateForm(state,obj){
+            console.log(obj.value.valueType)
+            var value = ((obj.value.valueType ==='number' ) ? parseFloat(obj.value.value) : obj.value.value);
+            state.toolParams.values[obj.key].value=value
+            
         }
     },
     actions: {
@@ -175,6 +181,9 @@ export const store = new Vuex.Store({
             context.commit('setCurrentTool',payload)
             context.commit('updateInputForm',payload)
         },
+        updateForm(context,payload){
+            context.commit('updateForm',payload)
+        }
     }
 
 })

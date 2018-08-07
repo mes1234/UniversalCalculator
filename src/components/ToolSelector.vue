@@ -6,7 +6,7 @@
             <option v-for="group in toolsListGroups" :key="group" :value="group">{{group}}</option>
         </select>
         <h2>Wybierz narzędzie</h2>
-            <button v-for="tool in toolsList" :key="tool.id" v-on:click="setCurrentTool(tool)"  type="button">{{tool.name}}</button>
+            <button v-for="tool in toolsList" :key="tool.id" @click="setCurrentTool(tool)"  type="button">{{tool.name}}</button>
             
     </div>
 </template>

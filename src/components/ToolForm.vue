@@ -4,7 +4,7 @@
         <form>
             <p v-for="(value, key) in toolParameters" :key="key">
                 {{key}}
-                <input :type=value.valueType :name=key :value=value.value>
+                <input :type=value.valueType :name=key v-model=value.value @input="updateForm({key,value})">
                 {{value.valueUnit}}
             </p>
         </form>         
@@ -29,7 +29,7 @@ export default {
     },
     methods: {
         ...mapActions([
-            ''
+            'updateForm' //updates specific input in toolParameters and recalculate
         ])
     }
 
