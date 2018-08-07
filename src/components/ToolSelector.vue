@@ -9,6 +9,7 @@
             <ul>
                 <li v-for="tool in toolsList" :key="tool">{{tool}}</li>
             </ul>
+            <!--  -->
     </div>
 </template>
 
