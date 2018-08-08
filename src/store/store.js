@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-// import { isContext } from 'vm';
-// import { stat } from 'fs';
+import moment from 'moment';
+
 
 Vue.use(Vuex);
 
@@ -58,17 +58,17 @@ export const store = new Vuex.Store({
             }
         ],
         // current tool to be used
-        toolSelected : {
-            id:0,
-            group:'',
-            name:''
-        },
         // active selected group
         activeGroup : 'geometria',
         // Tool setup parameters for use 
         // in form and description part
         toolParams :{
-            values:{
+            selected: {
+                id:0,
+                group:'',
+                name:''
+            },
+            values: {
                 'pierwsza': {
                     valueUnit: '%',
                     value: 1.,
@@ -85,10 +85,10 @@ export const store = new Vuex.Store({
                     valueType: 'number'
                 },
             }, // values to be passed to server every item has key is name, valueUnit, valueDefault, valueType
-            description: 'dodawanie trzech liczn', //string to describe tool
+            description: 'dodawanie trzech liczb', //string to describe tool
+            result : {} //placeholder for result
         },
-        // response of server
-        result : {}     
+            
     },
     getters: {
         toolsListGroups: (state)=> {
@@ -106,12 +106,18 @@ export const store = new Vuex.Store({
         toolName: (state)=> {
             //returns currently used tool
             console.log("yello")
-            return state.toolsList.filter(tool =>tool.id ===state.toolSelected.id).map(tool=> tool.name)[0];
+            return state.toolsList.filter(tool =>tool.id ===state.toolParams.selected.id).map(tool=> tool.name)[0];
 
         },
         toolParameters: (state)=> {
             //return object to render form
             return state.toolParams.values
+        },
+        toolDescription: (state)=>{
+            return state.toolParams.description;
+        },
+        toolResult: (state)=>{
+            return state.toolParams.result;
         }
     },
     mutations: {
@@ -119,12 +125,17 @@ export const store = new Vuex.Store({
             state.activeGroup= value
         },
         setCurrentTool(state,selectedTool){
-            state.toolSelected =selectedTool
+            state.toolParams.selected =selectedTool
         },
         updateInputForm(state,selectedTool){
             switch(selectedTool.name) {
                 case 'dodaj':
                 state.toolParams={
+                    selected: {
+                        id:1,
+                        group:'arytmetyka',
+                        name:'dodaj'
+                    },
                     values:{
                         'pierwsza': {
                             valueUnit: '%',
@@ -142,11 +153,17 @@ export const store = new Vuex.Store({
                             valueType: 'number'
                         },
                     }, // values to be passed to server every item has key is name, valueUnit, valueDefault, valueType
-                    description: 'dodawanie trzech liczn', //string to describe tool
+                    description: 'dodawanie trzech liczb', //string to describe tool
+                    result:{}
                 }
                 break;
                 case 'odejmij':
                 state.toolParams={
+                    selected: {
+                        id:2,
+                        group:'arytmetyka',
+                        name:'odejmij'
+                    },
                     values:{
                         'odjemna': {
                             valueUnit: 'lbf',
@@ -159,7 +176,8 @@ export const store = new Vuex.Store({
                             valueType: 'text'
                         },
                     }, // values to be passed to server every item has key is name, valueUnit, valueDefault, valueType
-                    description: 'dodawanie trzech liczn', //string to describe tool
+                    description: 'odejmowanie dwoch liczb', //string to describe tool
+                    result:{}
                 }
                 break;
                 default:
@@ -170,6 +188,9 @@ export const store = new Vuex.Store({
             console.log(obj.value.valueType)
             var value = ((obj.value.valueType ==='number' ) ? parseFloat(obj.value.value) : obj.value.value);
             state.toolParams.values[obj.key].value=value
+            state.toolParams.result = {
+                now: moment().format()
+            }
             
         }
     },
