@@ -121,13 +121,18 @@ export const store = new Vuex.Store({
         }
     },
     mutations: {
-        updateGroupSelection(state,value){
+        getToolsFromServer: (state)=>{
+            // TODO getToolsFromServer get tools list from server
+            return 0
+        },
+        updateGroupSelection: (state,value)=> {
             state.activeGroup= value
         },
-        setCurrentTool(state,selectedTool){
+        setCurrentTool: (state,selectedTool)=> {
             state.toolParams.selected =selectedTool
         },
-        updateInputForm(state,selectedTool){
+        updateInputForm: (state,selectedTool)=> {
+            // TODO updateInputForm get parameters for tool from server
             switch(selectedTool.name) {
                 case 'dodaj':
                 state.toolParams={
@@ -184,7 +189,8 @@ export const store = new Vuex.Store({
                     console.log('brak takiej opcji')
             }
         },
-        updateForm(state,obj){
+        updateForm: (state,obj)=> {
+            //
             console.log(obj.value.valueType)
             var value = ((obj.value.valueType ==='number' ) ? parseFloat(obj.value.value) : obj.value.value);
             state.toolParams.values[obj.key].value=value
@@ -195,14 +201,14 @@ export const store = new Vuex.Store({
         }
     },
     actions: {
-        updateGroupSelection(context,payload){
+        updateGroupSelection: (context,payload)=> {
             context.commit('updateGroupSelection',payload)
         },
-        setCurrentTool(context,payload){
+        setCurrentTool:(context,payload)=> {
             context.commit('setCurrentTool',payload)
             context.commit('updateInputForm',payload)
         },
-        updateForm(context,payload){
+        updateForm: (context,payload)=> {
             context.commit('updateForm',payload)
         }
     }
