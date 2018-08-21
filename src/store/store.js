@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import moment from 'moment';
+import axios from 'axios';
+
 
 
 Vue.use(Vuex);
@@ -123,7 +125,12 @@ export const store = new Vuex.Store({
     mutations: {
         getToolsFromServer: (state)=>{
             // TODO getToolsFromServer get tools list from server
-            return 0
+            axios
+            .get('http://127.0.0.1:8081/getList')
+            .then(respons=> (state.toolsList=respons),{
+                // TODO make CROS work or serve it via Flask
+                headers: {'Access-Control-Allow-Origin': '*'}
+            })
         },
         updateGroupSelection: (state,value)=> {
             state.activeGroup= value
@@ -201,6 +208,9 @@ export const store = new Vuex.Store({
         }
     },
     actions: {
+        getToolsFromServer: (context,payload)=> {
+            context.commit('getToolsFromServer',payload)
+        },
         updateGroupSelection: (context,payload)=> {
             context.commit('updateGroupSelection',payload)
         },

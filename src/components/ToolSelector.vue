@@ -20,6 +20,9 @@ export default {
         groupSelection : ''
         }
     },
+    mounted() {
+        this.$store.dispatch('getToolsFromServer')
+    },
     computed: {
             ...mapGetters([
                 'toolsListGroups', //return all possible groups
@@ -30,7 +33,8 @@ export default {
     methods: {
         ...mapActions([
             'updateGroupSelection', //rerender all tools in group
-            'setCurrentTool' //assing current tool to clicked one
+            'setCurrentTool', //assing current tool to clicked one
+            'getToolsFromServer' //before mounting fetch list of tools from API
         ])
     }
 
