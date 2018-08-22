@@ -107,7 +107,6 @@ export const store = new Vuex.Store({
         },
         toolName: (state)=> {
             //returns currently used tool
-            console.log("yello")
             return state.toolsList.filter(tool =>tool.id ===state.toolParams.selected.id).map(tool=> tool.name)[0];
 
         },
@@ -124,12 +123,11 @@ export const store = new Vuex.Store({
     },
     mutations: {
         getToolsFromServer: (state)=>{
-            // TODO getToolsFromServer get tools list from server
+            // fetches tools list from server
             axios
             .get('http://127.0.0.1:8081/getList')
-            .then(respons=> (state.toolsList=respons),{
-                // TODO make CROS work or serve it via Flask
-                headers: {'Access-Control-Allow-Origin': '*'}
+            .then(respons=> {
+                state.toolsList=respons.data;
             })
         },
         updateGroupSelection: (state,value)=> {
@@ -139,62 +137,18 @@ export const store = new Vuex.Store({
             state.toolParams.selected =selectedTool
         },
         updateInputForm: (state,selectedTool)=> {
-            // TODO updateInputForm get parameters for tool from server
-            switch(selectedTool.name) {
-                case 'dodaj':
-                state.toolParams={
-                    selected: {
-                        id:1,
-                        group:'arytmetyka',
-                        name:'dodaj'
-                    },
-                    values:{
-                        'pierwsza': {
-                            valueUnit: '%',
-                            value: 1.,
-                            valueType: 'number'
-                        },
-                        'druga': {
-                            valueUnit: 'lbm',
-                            value: 'Artur',
-                            valueType: 'text'
-                        },
-                        'trzecia': {
-                            valueUnit: '%',
-                            value: 3.,
-                            valueType: 'number'
-                        },
-                    }, // values to be passed to server every item has key is name, valueUnit, valueDefault, valueType
-                    description: 'dodawanie trzech liczb', //string to describe tool
-                    result:{}
-                }
-                break;
-                case 'odejmij':
-                state.toolParams={
-                    selected: {
-                        id:2,
-                        group:'arytmetyka',
-                        name:'odejmij'
-                    },
-                    values:{
-                        'odjemna': {
-                            valueUnit: 'lbf',
-                            value: 1.,
-                            valueType: 'number'
-                        },
-                        'druga': {
-                            valueUnit: 'lbm',
-                            value: 'Artur',
-                            valueType: 'text'
-                        },
-                    }, // values to be passed to server every item has key is name, valueUnit, valueDefault, valueType
-                    description: 'odejmowanie dwoch liczb', //string to describe tool
-                    result:{}
-                }
-                break;
-                default:
-                    console.log('brak takiej opcji')
-            }
+            // fetch parameters for function
+            axios
+            .get('http://127.0.0.1:8081/getParams/'+selectedTool.id)
+            .then(respons=> {
+                state.toolParams.values=respons.data;
+            })
+            // fetch description for function
+            axios
+            .get('http://127.0.0.1:8081/getDesc/'+selectedTool.id)
+            .then(respons=> {
+                state.toolParams.description=respons.data;
+            })
         },
         updateForm: (state,obj)=> {
             //
@@ -202,6 +156,7 @@ export const store = new Vuex.Store({
             var value = ((obj.value.valueType ==='number' ) ? parseFloat(obj.value.value) : obj.value.value);
             state.toolParams.values[obj.key].value=value
             state.toolParams.result = {
+                // TODO send to server and invoke calculate 
                 now: moment().format()
             }
             
