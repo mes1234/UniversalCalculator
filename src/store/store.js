@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import moment from 'moment';
+import axios from 'axios';
+import _ from  'lodash'
+
 
 
 Vue.use(Vuex);
@@ -68,23 +71,7 @@ export const store = new Vuex.Store({
                 group:'',
                 name:''
             },
-            values: {
-                'pierwsza': {
-                    valueUnit: '%',
-                    value: 1.,
-                    valueType: 'number'
-                },
-                'druga': {
-                    valueUnit: 'lbm',
-                    value: 'Artur',
-                    valueType: 'text'
-                },
-                'trzecia': {
-                    valueUnit: '%',
-                    value: 3.,
-                    valueType: 'number'
-                },
-            }, // values to be passed to server every item has key is name, valueUnit, valueDefault, valueType
+            values: {}, // values to be passed to server every item has key is name, valueUnit, valueDefault, valueType
             description: 'dodawanie trzech liczb', //string to describe tool
             result : {} //placeholder for result
         },
@@ -105,7 +92,6 @@ export const store = new Vuex.Store({
         },
         toolName: (state)=> {
             //returns currently used tool
-            console.log("yello")
             return state.toolsList.filter(tool =>tool.id ===state.toolParams.selected.id).map(tool=> tool.name)[0];
 
         },
@@ -122,8 +108,12 @@ export const store = new Vuex.Store({
     },
     mutations: {
         getToolsFromServer: (state)=>{
-            // TODO getToolsFromServer get tools list from server
-            return 0
+            // fetches tools list from server
+            axios
+            .get('http://127.0.0.1:8081/getList')
+            .then(respons=> {
+                state.toolsList=respons.data;
+            })
         },
         updateGroupSelection: (state,value)=> {
             state.activeGroup= value
@@ -132,75 +122,37 @@ export const store = new Vuex.Store({
             state.toolParams.selected =selectedTool
         },
         updateInputForm: (state,selectedTool)=> {
-            // TODO updateInputForm get parameters for tool from server
-            switch(selectedTool.name) {
-                case 'dodaj':
-                state.toolParams={
-                    selected: {
-                        id:1,
-                        group:'arytmetyka',
-                        name:'dodaj'
-                    },
-                    values:{
-                        'pierwsza': {
-                            valueUnit: '%',
-                            value: 1.,
-                            valueType: 'number'
-                        },
-                        'druga': {
-                            valueUnit: 'lbm',
-                            value: 'Artur',
-                            valueType: 'text'
-                        },
-                        'trzecia': {
-                            valueUnit: '%',
-                            value: 3.,
-                            valueType: 'number'
-                        },
-                    }, // values to be passed to server every item has key is name, valueUnit, valueDefault, valueType
-                    description: 'dodawanie trzech liczb', //string to describe tool
-                    result:{}
-                }
-                break;
-                case 'odejmij':
-                state.toolParams={
-                    selected: {
-                        id:2,
-                        group:'arytmetyka',
-                        name:'odejmij'
-                    },
-                    values:{
-                        'odjemna': {
-                            valueUnit: 'lbf',
-                            value: 1.,
-                            valueType: 'number'
-                        },
-                        'druga': {
-                            valueUnit: 'lbm',
-                            value: 'Artur',
-                            valueType: 'text'
-                        },
-                    }, // values to be passed to server every item has key is name, valueUnit, valueDefault, valueType
-                    description: 'odejmowanie dwoch liczb', //string to describe tool
-                    result:{}
-                }
-                break;
-                default:
-                    console.log('brak takiej opcji')
-            }
+            // fetch parameters for function
+            axios
+            .get('http://127.0.0.1:8081/getParams/'+selectedTool.id)
+            .then(respons=> {
+                state.toolParams.values=respons.data;
+            })
+            // fetch description for function
+            axios
+            .get('http://127.0.0.1:8081/getDesc/'+selectedTool.id)
+            .then(respons=> {
+                state.toolParams.description=respons.data;
+            })
         },
         updateForm: (state,obj)=> {
-            //
-            console.log(obj.value.valueType)
+            // update form and send to API to calculate
             var value = ((obj.value.valueType ==='number' ) ? parseFloat(obj.value.value) : obj.value.value);
             state.toolParams.values[obj.key].value=value
-            state.toolParams.result = {
-                now: moment().format()
-            }
-            
+            axios
+            .post('http://127.0.0.1:8081/calculate',{
+                data:_.mapValues(state.toolParams.values,'value'),
+                tool:state.toolParams.selected.id
+            })
+            .then(respons=> {
+                state.toolParams.result= respons.data
+            })           
         }
     },
     actions: {
+        getToolsFromServer: (context,payload)=> {
+            context.commit('getToolsFromServer',payload)
+        },
         updateGroupSelection: (context,payload)=> {
             context.commit('updateGroupSelection',payload)
         },
