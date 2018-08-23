@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import moment from 'moment';
 import axios from 'axios';
+import _ from  'lodash'
 
 
 
@@ -70,23 +71,7 @@ export const store = new Vuex.Store({
                 group:'',
                 name:''
             },
-            values: {
-                'pierwsza': {
-                    valueUnit: '%',
-                    value: 1.,
-                    valueType: 'number'
-                },
-                'druga': {
-                    valueUnit: 'lbm',
-                    value: 'Artur',
-                    valueType: 'text'
-                },
-                'trzecia': {
-                    valueUnit: '%',
-                    value: 3.,
-                    valueType: 'number'
-                },
-            }, // values to be passed to server every item has key is name, valueUnit, valueDefault, valueType
+            values: {}, // values to be passed to server every item has key is name, valueUnit, valueDefault, valueType
             description: 'dodawanie trzech liczb', //string to describe tool
             result : {} //placeholder for result
         },
@@ -151,15 +136,17 @@ export const store = new Vuex.Store({
             })
         },
         updateForm: (state,obj)=> {
-            //
-            console.log(obj.value.valueType)
+            // update form and send to API to calculate
             var value = ((obj.value.valueType ==='number' ) ? parseFloat(obj.value.value) : obj.value.value);
             state.toolParams.values[obj.key].value=value
-            state.toolParams.result = {
-                // TODO send to server and invoke calculate 
-                now: moment().format()
-            }
-            
+            axios
+            .post('http://127.0.0.1:8081/calculate',{
+                data:_.mapValues(state.toolParams.values,'value'),
+                tool:state.toolParams.selected.id
+            })
+            .then(respons=> {
+                state.toolParams.result= respons.data
+            })           
         }
     },
     actions: {
