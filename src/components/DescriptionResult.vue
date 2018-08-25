@@ -1,14 +1,26 @@
 <template>
     <div id="DesriptionResult">
-        <div id="Opis narzędzia">
-            <h2>Opis narzędzia</h2>  
-            <p> {{toolDescription}}</p>     
+        <div class="card-extended">
+            <div class="card-body ">
+                <div class="card-title-extended" >
+                    Opis narzędzia
+                </div>
+                <div class="card-text"> 
+                    {{toolDescription}}
+                </div>
+            </div>
         </div>
-        <div id="Wynik">
-            <h2>Wynik</h2>  
-            <p v-for="(value, key) in toolResult" :key="key">
-            {{key}} : {{value}}
-            </p>   
+        <div class="card-extended">
+            <div class="card-body ">
+                <div class="card-title-extended" >
+                    Wynik
+                </div>
+                <div class="card-text">
+                    <p v-for="(value, key) in toolResult" :key="key">
+                    {{key}} : {{value}}
+                    </p>  
+                </div>
+            </div> 
         </div>
     </div>
 </template>
@@ -39,5 +51,5 @@ export default {
 </script>
 
 <style lang= "scss" scoped>
-    @import 'bootstrap/scss/bootstrap.scss'
+    @import './src/scss/custom';
 </style>

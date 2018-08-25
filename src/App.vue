@@ -1,18 +1,28 @@
 <template>
   <div id="app">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm">
-          <tool-selector></tool-selector>
+    <div class="card-extended">
+      <div class="card-body ">
+        <div class="card-title-extended text-center" >
+          <h3>
+           Uniwersalny Kalkulator 
+          </h3>
         </div>
-        <div class="col-sm">
-          <tool-form></tool-form>
+        <div class="card-text">
+            <div class="container">
+              <div class="row">
+                <div class="col-sm">
+                  <tool-selector></tool-selector>
+                </div>
+                <div class="col-sm">
+                  <tool-form></tool-form>
+                </div>
+                <div class="col-sm">
+                  <description-result></description-result>
+                </div> 
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-sm">
-          <description-result></description-result>
-        </div> 
-    
-    
       </div>
     </div>
   </div>
@@ -33,5 +43,5 @@ export default {
 </script>
 
 <style lang= "scss" scoped>
-    @import 'bootstrap/scss/bootstrap.scss'
+    @import './src/scss/custom';
 </style>

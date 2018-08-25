@@ -1,21 +1,27 @@
 <template>
     <div id="ToolSelector">
-        <div class="panel panel-primary fdf">
-            <div class="panel-heading">
-                Wybierz grupę narzędzie
-            </div>
-            <div class="panel-body">
-                <select v-model="groupSelection" @change="updateGroupSelection(groupSelection)" class="form-control form-control-sm">
-                    <option v-for="group in toolsListGroups" :key="group" :value="group">{{group}}</option>
-                </select>
+        <div class="card-extended">
+            <div class="card-body ">
+                <div class="card-title-extended" >
+                    Wybierz grupę narzędzie
+                </div>
+                <div class="card-text">
+                    <select v-model="groupSelection" @change="updateGroupSelection(groupSelection)" class="form-control form-control-sm">
+                        <option v-for="group in toolsListGroups" :key="group" :value="group">{{group}}</option>
+                    </select>
+                </div>
             </div>
         </div>
 
-        <div class="panel panel-primary">
-            <div class="panel-heading">Wybierz narzędzie</div>
-            <div class="panel-body">
-                <div class="btn-group-vertical" role="group" aria-label="...">
-                        <button v-for="tool in toolsList" :key="tool.id" @click="setCurrentTool(tool)"  type="button" class="btn btn-dark">{{tool.name}}</button>
+        <div class="card-extended">
+            <div class="card-body ">
+                <div class="card-title-extended">
+                    Wybierz narzędzie
+                </div>
+                <div class="card-text col-xs-3">
+                    <div class="btn-group-vertical btn-default btn-block " role="group" >
+                            <button v-for="tool in toolsList" :key="tool.id" @click="setCurrentTool(tool)"  type="button" class="btn  mt-1 ">{{tool.name}}</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -53,5 +59,5 @@ export default {
 </script>
 
 <style lang= "scss" scoped>
-    @import 'bootstrap/scss/bootstrap.scss'
+    @import './src/scss/custom';
 </style>

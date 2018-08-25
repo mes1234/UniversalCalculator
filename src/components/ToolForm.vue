@@ -1,13 +1,23 @@
 <template>
     <div id="ToolSelector">
-        <h2>{{toolName}}</h2>
-        <form>
-            <p v-for="(value, key) in toolParameters" :key="key">
-                {{key}}
-                <input :type=value.valueType :name=key v-model=value.value @input="updateForm({key,value})">
-                {{value.valueUnit}}
-            </p>
-        </form>         
+        <div class="card-extended">
+            <div class="card-body ">
+                <div class="card-title-extended" >
+                    {{toolName}}
+                </div>
+                <div class="card-text">
+                    <div class="form-group">
+                        <form>
+                            <div  class="" v-for="(value, key) in toolParameters" :key="key">
+                                <!-- TODO correct for label -->
+                                <label >{{key}} [{{value.valueUnit}}]</label>
+                                <input class="form-control " :type=value.valueType :name=key v-model=value.value @input="updateForm({key,value})">
+                            </div>
+                        </form>   
+                    </div> 
+                </div>
+            </div>
+        </div>     
     </div>
 </template>
 
@@ -37,5 +47,5 @@ export default {
 </script>
 
 <style lang= "scss" scoped>
-    @import 'bootstrap/scss/bootstrap.scss'
+    @import './src/scss/custom';
 </style>
