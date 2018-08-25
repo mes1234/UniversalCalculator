@@ -1,13 +1,24 @@
 <template>
     <div id="ToolSelector">
-        <h2>Wybierz grupę narzędzie</h2>
-  <!-- <select v-model="selected_game"> -->
-        <select v-model="groupSelection" @change="updateGroupSelection(groupSelection)">
-            <option v-for="group in toolsListGroups" :key="group" :value="group">{{group}}</option>
-        </select>
-        <h2>Wybierz narzędzie</h2>
-            <button v-for="tool in toolsList" :key="tool.id" @click="setCurrentTool(tool)"  type="button">{{tool.name}}</button>
-            
+        <div class="panel panel-primary fdf">
+            <div class="panel-heading">
+                Wybierz grupę narzędzie
+            </div>
+            <div class="panel-body">
+                <select v-model="groupSelection" @change="updateGroupSelection(groupSelection)" class="form-control form-control-sm">
+                    <option v-for="group in toolsListGroups" :key="group" :value="group">{{group}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Wybierz narzędzie</div>
+            <div class="panel-body">
+                <div class="btn-group-vertical" role="group" aria-label="...">
+                        <button v-for="tool in toolsList" :key="tool.id" @click="setCurrentTool(tool)"  type="button" class="btn btn-dark">{{tool.name}}</button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -41,5 +52,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang= "scss" scoped>
+    @import 'bootstrap/scss/bootstrap.scss'
 </style>

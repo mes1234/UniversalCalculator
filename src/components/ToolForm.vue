@@ -36,5 +36,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang= "scss" scoped>
+    @import 'bootstrap/scss/bootstrap.scss'
 </style>

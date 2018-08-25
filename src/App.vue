@@ -1,8 +1,20 @@
 <template>
   <div id="app">
-    <tool-selector></tool-selector>
-    <tool-form></tool-form>
-    <description-result></description-result>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <tool-selector></tool-selector>
+        </div>
+        <div class="col-sm">
+          <tool-form></tool-form>
+        </div>
+        <div class="col-sm">
+          <description-result></description-result>
+        </div> 
+    
+    
+      </div>
+    </div>
   </div>
 </template>
 
@@ -20,5 +32,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang= "scss" scoped>
+    @import 'bootstrap/scss/bootstrap.scss'
 </style>
