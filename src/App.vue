@@ -1,13 +1,14 @@
 <template>
   <div id="app">
-    <div class="card-extended">
-      <div class="card-body ">
-        <div class="card-title-extended text-center" >
-          <h3>
-           Uniwersalny Kalkulator 
-          </h3>
-        </div>
-        <div class="card-text">
+    <div class="container">
+      <div class="card-extended">
+        <div class="card-body ">
+          <div class="card-title-extended text-center" >
+            <h3>
+            Uniwersalny Kalkulator 
+            </h3>
+          </div>
+          <div class="card-text">
             <div class="container">
               <div class="row">
                 <div class="col-sm">

@@ -3,7 +3,9 @@ import Vuex from 'vuex';
 import moment from 'moment';
 import axios from 'axios';
 import _ from  'lodash'
-
+const API= 'witkepcz.pythonanywhere.com'
+// '127.0.0.1:8081'
+// 'witkepcz.pythonanywhere.com'
 
 
 Vue.use(Vuex);
@@ -13,53 +15,7 @@ export const store = new Vuex.Store({
         // list of all avialable tools 
         // fetched from:
         // /getToolsList 
-        toolsList : [
-            {
-                id:1,
-                group:'arytmetyka',
-                name:'dodaj'
-            },
-            {
-                id:2,
-                group:'arytmetyka',
-                name:'odejmij'
-            },
-            {
-                id:3,
-                group:'arytmetyka',
-                name:'pomnoz'
-            },
-            {
-                id:4,
-                group:'arytmetyka',
-                name:'podziel'
-            },
-            {
-                id:5,
-                group:'arytmetyka',
-                name:'modulo'
-            },
-            {
-                id:6,
-                group:'przeplyw',
-                name:'kryza'
-            },
-            {
-                id:7,
-                group:'przeplyw',
-                name:'darcy'
-            },
-            {
-                id:8,
-                group:'geometria',
-                name:'pitagoras'
-            },
-            {
-                id:9,
-                group:'geometria',
-                name:'tales'
-            }
-        ],
+        toolsList : [],
         // current tool to be used
         // active selected group
         activeGroup : 'geometria',
@@ -110,7 +66,7 @@ export const store = new Vuex.Store({
         getToolsFromServer: (state)=>{
             // fetches tools list from server
             axios
-            .get('http://127.0.0.1:8081/getList')
+            .get('http://'+API+'/getList')
             .then(respons=> {
                 state.toolsList=respons.data;
             })
@@ -124,13 +80,13 @@ export const store = new Vuex.Store({
         updateInputForm: (state,selectedTool)=> {
             // fetch parameters for function
             axios
-            .get('http://127.0.0.1:8081/getParams/'+selectedTool.id)
+            .get('http://'+API+'/getParams/'+selectedTool.id)
             .then(respons=> {
                 state.toolParams.values=respons.data;
             })
             // fetch description for function
             axios
-            .get('http://127.0.0.1:8081/getDesc/'+selectedTool.id)
+            .get('http://'+API+'/getDesc/'+selectedTool.id)
             .then(respons=> {
                 state.toolParams.description=respons.data;
             })
@@ -140,7 +96,7 @@ export const store = new Vuex.Store({
             var value = ((obj.value.valueType ==='number' ) ? parseFloat(obj.value.value) : obj.value.value);
             state.toolParams.values[obj.key].value=value
             axios
-            .post('http://127.0.0.1:8081/calculate',{
+            .post('http://'+API+'/calculate',{
                 data:_.mapValues(state.toolParams.values,'value'),
                 tool:state.toolParams.selected.id
             })
