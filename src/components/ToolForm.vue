@@ -9,9 +9,16 @@
                     <div class="form-group">
                         <form>
                             <div  class="" v-for="(value, key) in toolParameters" :key="key">
-                                <!-- TODO correct for label -->
-                                <label >{{key}} [{{value.valueUnit}}]</label>
-                                <input class="form-control " :type=value.valueType :name=key v-model=value.value @input="updateForm({key,value})">
+                                <div v-if="value.valueType==='list'">
+                                    <label >{{key}} [{{value.valueUnit}}]</label>
+                                    <select :id=key @change="updateForm({key})" class="form-control form-control-sm">
+                                        <option v-for="opt in value.valueDefault" :key="opt" :value="opt">{{opt}}</option>
+                                    </select>
+                                </div>
+                                <div v-else>
+                                    <label >{{key}} [{{value.valueUnit}}]</label>
+                                    <input  class="form-control " :type=value.valueType :id=key v-model=value.value @input="updateForm({key})">
+                                </div>
                             </div>
                         </form>   
                     </div> 

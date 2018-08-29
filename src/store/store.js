@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import moment from 'moment';
 import axios from 'axios';
 import _ from  'lodash'
-const API= 'witkepcz.pythonanywhere.com'
+const API= '127.0.0.1:8081'
 // '127.0.0.1:8081'
 // 'witkepcz.pythonanywhere.com'
 
@@ -93,8 +93,11 @@ export const store = new Vuex.Store({
         },
         updateForm: (state,obj)=> {
             // update form and send to API to calculate
-            var value = ((obj.value.valueType ==='number' ) ? parseFloat(obj.value.value) : obj.value.value);
+            
+            var selElement= document.getElementById(obj.key)
+            var value = ((state.toolParams.values[obj.key].valueType ==='number' ) ? parseFloat(selElement.value) : selElement.value);
             state.toolParams.values[obj.key].value=value
+            
             axios
             .post('http://'+API+'/calculate',{
                 data:_.mapValues(state.toolParams.values,'value'),
