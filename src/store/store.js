@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import moment from 'moment';
 import axios from 'axios';
 import _ from  'lodash'
+import router from '../../src/router'
 const API= '127.0.0.1:8081'
 // '127.0.0.1:8081'
 // 'witkepcz.pythonanywhere.com'
@@ -106,9 +107,14 @@ export const store = new Vuex.Store({
             .then(respons=> {
                 state.toolParams.result= respons.data
             })           
-        }
+        },
+        tryLogin: (state,login,password)=> {
+            // TODO make request to login on backend
+            router.push('/calc')
+         }
     },
     actions: {
+
         getToolsFromServer: (context,payload)=> {
             context.commit('getToolsFromServer',payload)
         },
@@ -121,6 +127,9 @@ export const store = new Vuex.Store({
         },
         updateForm: (context,payload)=> {
             context.commit('updateForm',payload)
+        },
+        tryLogin: (context,payload)=> {
+            context.commit('tryLogin',payload)
         }
     }
 
