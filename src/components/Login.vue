@@ -12,8 +12,8 @@
             <div class="container">
               <div class="row">
                 <div class="col-sm">
-                  <form class="form-group" @submit.prevent="tryLogin({login},{password})">
-                    <input type="text" name="user" placeholder="Username" class="form-control" v-model="login">
+                  <form class="form-group" @submit.prevent="tryLogin([username,password])">
+                    <input type="text" name="user" placeholder="Username" class="form-control" v-model="username">
                     <input type="password" name="pass" placeholder="Password"  class="form-control" v-model="password">
                     <input type="submit" name="login"  value="Login" class="form-control">
                   </form>
@@ -34,8 +34,8 @@ export default {
   name: 'Login',
   data () {
     return {
-    login : '',
-    password: ''
+          username:'',
+          password:''
     }
     },
     methods: {

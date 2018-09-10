@@ -13,13 +13,14 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        // list of all avialable tools 
+        token : '',
+        // list of all available tools 
         // fetched from:
         // /getToolsList 
         toolsList : [],
         // current tool to be used
         // active selected group
-        activeGroup : 'geometria',
+        activeGroup : '',
         // Tool setup parameters for use 
         // in form and description part
         toolParams :{
@@ -29,7 +30,7 @@ export const store = new Vuex.Store({
                 name:''
             },
             values: {}, // values to be passed to server every item has key is name, valueUnit, valueDefault, valueType
-            description: 'dodawanie trzech liczb', //string to describe tool
+            description: '', //string to describe tool
             result : {} //placeholder for result
         },
             
@@ -67,7 +68,7 @@ export const store = new Vuex.Store({
         getToolsFromServer: (state)=>{
             // fetches tools list from server
             axios
-            .get('http://'+API+'/getList')
+            .get(`http://${API}/getList`)
             .then(respons=> {
                 state.toolsList=respons.data;
             })
@@ -81,13 +82,13 @@ export const store = new Vuex.Store({
         updateInputForm: (state,selectedTool)=> {
             // fetch parameters for function
             axios
-            .get('http://'+API+'/getParams/'+selectedTool.id)
+            .get(`http://${API}/getParams/`+selectedTool.id)
             .then(respons=> {
                 state.toolParams.values=respons.data;
             })
             // fetch description for function
             axios
-            .get('http://'+API+'/getDesc/'+selectedTool.id)
+            .get(`http://${API}/getDesc/`+selectedTool.id)
             .then(respons=> {
                 state.toolParams.description=respons.data;
             })
@@ -100,7 +101,7 @@ export const store = new Vuex.Store({
             state.toolParams.values[obj.key].value=value
             
             axios
-            .post('http://'+API+'/calculate',{
+            .post(`http://${API}/calculate`,{
                 data:_.mapValues(state.toolParams.values,'value'),
                 tool:state.toolParams.selected.id
             })
@@ -108,9 +109,24 @@ export const store = new Vuex.Store({
                 state.toolParams.result= respons.data
             })           
         },
-        tryLogin: (state,login,password)=> {
+        tryLogin: (state,cred)=> {
+            var credToSend=
+            {
+                username:cred[0],
+                password:cred[1]
+            }
+            axios
+            .post(`http://${API}/login`,credToSend)
+            .then(respons=> {
+                console.log(respons.data)
+                router.push('/calc')
+            })
+            .catch(error=> {
+                console.log(error.response)
+            })
+
             // TODO make request to login on backend
-            router.push('/calc')
+            // router.push('/calc')
          }
     },
     actions: {
