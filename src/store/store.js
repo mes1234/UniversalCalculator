@@ -13,7 +13,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        token : '',
+        token : false,
         // list of all available tools 
         // fetched from:
         // /getToolsList 
@@ -118,7 +118,10 @@ export const store = new Vuex.Store({
             axios
             .post(`http://${API}/login`,credToSend)
             .then(respons=> {
-                console.log(respons.data)
+                state.token=respons.data.access_token
+                
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + state.token;
+                console.log(`axios:${axios.defaults.headers.common['Authorization']}`)
                 router.push('/calc')
             })
             .catch(error=> {
