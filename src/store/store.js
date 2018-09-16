@@ -14,6 +14,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         token : false,
+        username: false,
         // list of all available tools 
         // fetched from:
         // /getToolsList 
@@ -121,15 +122,27 @@ export const store = new Vuex.Store({
                 state.token=respons.data.access_token
                 
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + state.token;
-                console.log(`axios:${axios.defaults.headers.common['Authorization']}`)
+                state.username= cred[0]
                 router.push('/calc')
             })
             .catch(error=> {
                 console.log(error.response)
             })
+         },
+         logoutUser: (state)=>{
+            var credToSend= {
+                username: state.username
+            }
+            axios
+            .post(`http://${API}/logout`,credToSend)
+            .then(respons=> {
+                state.token=false
+                router.push('/')
+            })
+            .catch(error=> {
+                console.log(error.response)
+            })
 
-            // TODO make request to login on backend
-            // router.push('/calc')
          }
     },
     actions: {
@@ -149,6 +162,9 @@ export const store = new Vuex.Store({
         },
         tryLogin: (context,payload)=> {
             context.commit('tryLogin',payload)
+        },
+        logoutUser: (context,payload)=> {
+            context.commit('logoutUser',payload)
         }
     }
 

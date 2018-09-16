@@ -12,6 +12,11 @@
             <div class="container">
               <div class="row">
                 <div class="col-sm">
+                  <menu-user></menu-user>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm">
                   <tool-selector></tool-selector>
                 </div>
                 <div class="col-sm">
@@ -33,12 +38,14 @@
 import ToolSelector from './ToolSelector.vue'
 import ToolForm from './ToolForm.vue'
 import DescriptionResult from './DescriptionResult.vue'
+import MenuUser from './MenuUser.vue'
 export default {
   name: 'app',
   components: {
     'tool-selector': ToolSelector,
     'tool-form': ToolForm,
-    'description-result': DescriptionResult
+    'description-result': DescriptionResult,
+    'menu-user': MenuUser
   }
 }
 </script>
