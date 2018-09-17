@@ -1,46 +1,15 @@
 <template>
   <div id="app">
-    <div class="container">
-      <div class="card-extended">
-        <div class="card-body ">
-          <div class="card-title-extended text-center" >
-            <h3>
-            Uniwersalny Kalkulator 
-            </h3>
-          </div>
-          <div class="card-text">
-            <div class="container">
-              <div class="row">
-                <div class="col-sm">
-                  <tool-selector></tool-selector>
-                </div>
-                <div class="col-sm">
-                  <tool-form></tool-form>
-                </div>
-                <div class="col-sm">
-                  <description-result></description-result>
-                </div> 
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <!-- <nav>
+        <router-link to="/login">Login</router-link>
+        <router-link to="/calc">Calc</router-link>
+      </nav> -->
+    <router-view/>
   </div>
 </template>
 
 <script>
-import ToolSelector from './components/ToolSelector.vue'
-import ToolForm from './components/ToolForm.vue'
-import DescriptionResult from './components/DescriptionResult.vue'
-export default {
-  name: 'app',
-  components: {
-    'tool-selector': ToolSelector,
-    'tool-form': ToolForm,
-    'description-result': DescriptionResult
-  }
-}
+export default {}
 </script>
 
 <style lang= "scss" scoped>

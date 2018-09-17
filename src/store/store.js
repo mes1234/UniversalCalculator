@@ -3,7 +3,8 @@ import Vuex from 'vuex';
 import moment from 'moment';
 import axios from 'axios';
 import _ from  'lodash'
-const API= '127.0.0.1:8081'
+import router from '../../src/router'
+const API= 'witkepcz.pythonanywhere.com'
 // '127.0.0.1:8081'
 // 'witkepcz.pythonanywhere.com'
 
@@ -12,13 +13,15 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        // list of all avialable tools 
+        token : false,
+        username: false,
+        // list of all available tools 
         // fetched from:
         // /getToolsList 
         toolsList : [],
         // current tool to be used
         // active selected group
-        activeGroup : 'geometria',
+        activeGroup : '',
         // Tool setup parameters for use 
         // in form and description part
         toolParams :{
@@ -28,7 +31,7 @@ export const store = new Vuex.Store({
                 name:''
             },
             values: {}, // values to be passed to server every item has key is name, valueUnit, valueDefault, valueType
-            description: 'dodawanie trzech liczb', //string to describe tool
+            description: '', //string to describe tool
             result : {} //placeholder for result
         },
             
@@ -66,7 +69,7 @@ export const store = new Vuex.Store({
         getToolsFromServer: (state)=>{
             // fetches tools list from server
             axios
-            .get('http://'+API+'/getList')
+            .get(`http://${API}/getList`)
             .then(respons=> {
                 state.toolsList=respons.data;
             })
@@ -80,13 +83,13 @@ export const store = new Vuex.Store({
         updateInputForm: (state,selectedTool)=> {
             // fetch parameters for function
             axios
-            .get('http://'+API+'/getParams/'+selectedTool.id)
+            .get(`http://${API}/getParams/`+selectedTool.id)
             .then(respons=> {
                 state.toolParams.values=respons.data;
             })
             // fetch description for function
             axios
-            .get('http://'+API+'/getDesc/'+selectedTool.id)
+            .get(`http://${API}/getDesc/`+selectedTool.id)
             .then(respons=> {
                 state.toolParams.description=respons.data;
             })
@@ -99,16 +102,51 @@ export const store = new Vuex.Store({
             state.toolParams.values[obj.key].value=value
             
             axios
-            .post('http://'+API+'/calculate',{
+            .post(`http://${API}/calculate`,{
                 data:_.mapValues(state.toolParams.values,'value'),
                 tool:state.toolParams.selected.id
             })
             .then(respons=> {
                 state.toolParams.result= respons.data
             })           
-        }
+        },
+        tryLogin: (state,cred)=> {
+            var credToSend=
+            {
+                username:cred[0],
+                password:cred[1]
+            }
+            axios
+            .post(`http://${API}/login`,credToSend)
+            .then(respons=> {
+                state.token=respons.data.access_token
+                
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + state.token;
+                state.username= cred[0]
+                router.push('/calc')
+            })
+            .catch(error=> {
+                console.log(error.response)
+            })
+         },
+         logoutUser: (state)=>{
+            var credToSend= {
+                username: state.username
+            }
+            axios
+            .post(`http://${API}/logout`,credToSend)
+            .then(respons=> {
+                state.token=false
+                router.push('/')
+            })
+            .catch(error=> {
+                console.log(error.response)
+            })
+
+         }
     },
     actions: {
+
         getToolsFromServer: (context,payload)=> {
             context.commit('getToolsFromServer',payload)
         },
@@ -121,6 +159,12 @@ export const store = new Vuex.Store({
         },
         updateForm: (context,payload)=> {
             context.commit('updateForm',payload)
+        },
+        tryLogin: (context,payload)=> {
+            context.commit('tryLogin',payload)
+        },
+        logoutUser: (context,payload)=> {
+            context.commit('logoutUser',payload)
         }
     }
 
