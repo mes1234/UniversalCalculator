@@ -4,7 +4,8 @@ import moment from 'moment';
 import axios from 'axios';
 import _ from  'lodash'
 import router from '../../src/router'
-const API= 'witkepcz.pythonanywhere.com'
+// const API= 'witkepcz.pythonanywhere.com'
+const API='52.211.104.156:5000'
 // '127.0.0.1:8081'
 // 'witkepcz.pythonanywhere.com'
 
